@@ -23,13 +23,13 @@ en_train, en_valid, es_train, es_valid = train_test_split(english_tokenized_tens
                                          shuffle=True)
 
 # len(en_train), len(en_valid), len(es_train), len(es_valid)
-# (1572587, 393147, 1572587, 393147)
+# (1363871, 340968, 1363871, 340968)
 
 en_train, en_test, es_train, es_test = train_test_split(en_train, es_train, test_size=0.1, random_state=8, 
                                          shuffle=True)
 
 # len(en_train), len(en_valid), len(en_test), len(es_train), len(es_valid), len(es_test)
-# (1415328, 393147, 157259, 1415328, 393147, 157259)
+# (1227483, 340968, 136388, 1227483, 340968, 136388)
 
 with open('train.pickle', 'wb') as f:
     pickle.dump([en_train, es_train], f)

@@ -13,34 +13,6 @@ from tqdm import tqdm
 import pickle
 import os
 
-# read the data and word_index
-DIR_path = "D:\MSc Data Science\Advanced Modules\[INF-DSAM1B] Advanced Machine Learning B\Deep learning for NLP\Project\Machine translation with attention"
-PROCESSED_DATA_PATH = "Processed Data"
-
-with open(os.path.join(DIR_path, PROCESSED_DATA_PATH, "english_tokenized_tensor.pickle"), "rb") as f:
-    english_tokenized_tensor = pickle.load(f)
-
-with open(os.path.join(DIR_path, PROCESSED_DATA_PATH, "word_to_index_eng.pickle"), "rb") as f:
-    word_to_index_eng = pickle.load(f)
-
-with open(os.path.join(DIR_path, PROCESSED_DATA_PATH, "spanish_tokenized_tensor.pickle"), "rb") as f:
-     spanish_tokenized_tensor = pickle.load(f)
-
-with open(os.path.join(DIR_path, PROCESSED_DATA_PATH, "word_to_index_spanish.pickle"), "rb") as f:
-     word_to_index_spanish = pickle.load(f)
-
-# For cuda.
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-
-BATCH_SIZE = 16
-MAX_SENTENCE_LENGTH = 50
-EMBEDDING_DIM = 30
-ENCODER_HIDDEN_DIM = 1000
-DECODER_HIDDEN_DIM = 1000
-EPOCHS = 10
-
-EMBEDDING_SIZE_ENGLISH = len(word_to_index_eng)
-EMBEDDING_SIZE_SPANISH = len(word_to_index_spanish)
 
 class Encoder(nn.Module):
     def __init__(self, EMBEDDING_DIM, EMBEDDING_SIZE_ENGLISH, ENCODER_HIDDEN_DIM, DECODER_HIDDEN_DIM):
@@ -231,6 +203,41 @@ def padding(english_tokenized_tensor, spanish_tokenized_tensor):
     return english_batch, spanish_batch
 
 if __name__=='__main__':
+    
+    # read the data and word_index
+    DIR_path = "D:\MSc Data Science\Advanced Modules\[INF-DSAM1B] Advanced Machine Learning B\Deep learning for NLP\Project\Machine translation with attention"
+    PROCESSED_DATA_PATH = "Processed Data"
+    
+    # for the time, valid data is being used.
+    with open("D:\MSc Data Science\Advanced Modules\[INF-DSAM1B] Advanced Machine Learning B\Deep learning for NLP\Project\Machine translation with attention\Processed Data\\valid.pickle", "rb") as f:
+        valid = pickle.load(f)
+    #with open("spanish_tokenized_tensor.pickle", "rb") as f:
+    #    spanish_tokenized_tensor = pickle.load(f)
+    
+    with open(os.path.join(DIR_path, PROCESSED_DATA_PATH, "word_to_index_eng.pickle"), "rb") as f:
+        word_to_index_eng = pickle.load(f)
+    
+    with open(os.path.join(DIR_path, PROCESSED_DATA_PATH, "word_to_index_spanish.pickle"), "rb") as f:
+         word_to_index_spanish = pickle.load(f)
+    
+    # For cuda.
+    #device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    device = torch.device('cpu')
+    
+    BATCH_SIZE = 16
+    MAX_SENTENCE_LENGTH = 50
+    EMBEDDING_DIM = 30
+    ENCODER_HIDDEN_DIM = 1000
+    DECODER_HIDDEN_DIM = 1000
+    EPOCHS = 10
+    
+    EMBEDDING_SIZE_ENGLISH = len(word_to_index_eng)
+    EMBEDDING_SIZE_SPANISH = len(word_to_index_spanish)
+
+    english_tokenized_tensor = valid[0]
+    spanish_tokenized_tensor = valid[1]
+    
+    
     # encoder model
     # encoder model
     model = Encoder(EMBEDDING_DIM, EMBEDDING_SIZE_ENGLISH, ENCODER_HIDDEN_DIM, DECODER_HIDDEN_DIM)
