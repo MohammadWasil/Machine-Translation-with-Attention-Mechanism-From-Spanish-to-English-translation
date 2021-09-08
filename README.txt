@@ -28,10 +28,3 @@ The files can be run from cmd prompt, using the the following cmd lines:
 2) To train and validate the model, run "python run.py --RUN_MODE train_val"
 3) To evaluate the loss on test data,  "python run.py --RUN_MODE test --MODEL _number_" (_number_ is the model number until which you trained your model)
 4) To calculate the BLEU score, type,  "python run.py --RUN_MODE bleu --MODEL _number_" (_number_ is the model number until which you trained your model)
-
-
-.
-+-- _config.yml
-+-- _drafts
-|   +-- begin-with-the-crazy-ideas.textile
-|   +-- on-simplicity-in-technology.markdown
