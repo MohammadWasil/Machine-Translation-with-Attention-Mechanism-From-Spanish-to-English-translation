@@ -25,7 +25,7 @@ The structure of the files should looks like this:
 Make sure to have an empty folder, "Data"
 
 The files can be run from cmd prompt, using the the following cmd lines:
-1) cd to "/Codes". Then run the below code line in cmd.
+1) cd to "/Machine_translation_with_attention_DL4NLP". Then run the below code line in cmd.
 2) To train and validate the model, run "python run.py --RUN_MODE train_val"
 3) To evaluate the loss on test data,  "python run.py --RUN_MODE test --MODEL _number_" (_number_ is the model number until which you trained your model)
 4) To calculate the BLEU score, type,  "python run.py --RUN_MODE bleu --MODEL _number_" (_number_ is the model number until which you trained your model)
