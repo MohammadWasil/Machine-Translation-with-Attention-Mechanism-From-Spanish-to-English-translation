@@ -1,8 +1,8 @@
 
 -------------------------
-Pytroch version : 1.7.1+cu101
-torchtext version: 0.8.0
-spacy version: 3.1.1
+Pytroch version : 1.7.1+cu101 <Br/>
+torchtext version: 0.8.0 <Br/>
+spacy version: 3.1.1 <Br/>
 -------------------------
 Model was trained for 20 Epochs, with a size of roughly 510 mb.
 
