@@ -2,9 +2,9 @@
 
 ## Version:
 ```
-Pytroch version : 1.7.1+cu101 <Br/>
-torchtext version: 0.8.0 <Br/>
-spacy version: 3.1.1 <Br/>
+Pytroch version : 1.7.1+cu101
+torchtext version: 0.8.0
+spacy version: 3.1.1
 ```
 
 ## Model was trained for 20 Epochs and achieved a BLEU score of 25.37 (with model size of roughly 510 mb). <Br/>
