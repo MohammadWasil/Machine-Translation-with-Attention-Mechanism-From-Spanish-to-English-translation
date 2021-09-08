@@ -10,6 +10,7 @@ Different version of pytorch, torchtext and spacy might cause the program to bre
 -------
 
 The structure of the files should looks like this:
+```
 .
 ├── Data                    
 │   ├──                     # initialy this would be empty.
@@ -20,7 +21,7 @@ The structure of the files should looks like this:
 ├── mymodel.py
 ├── README.txt
 └── run.py
-
+```
 Make sure to have an empty folder, "Data"
 
 The files can be run from cmd prompt, using the the following cmd lines:
