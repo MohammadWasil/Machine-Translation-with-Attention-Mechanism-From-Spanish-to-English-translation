@@ -7,6 +7,27 @@ torchtext version: 0.8.0
 spacy version: 3.1.1
 ```
 
+## To install Pytorch:
+### Steps
+1. Create an environment <Br/>
+```conda create -n pytorch python=3.7```
+
+2. Activate the environment <Br/>
+```conda activate pytorch```
+
+3. Install jupyter<Br/>
+```conda install -c anaconda jupyter```
+
+4. Install the ipykernel<Br/>
+```pip install ipykernel```
+
+5. Register your environment<Br/>
+```python -m ipykernel install --user --name pytorch --display-name "pytorch"```
+
+6. Install [pytorch](https://pytorch.org/get-started/locally/)<Br/>
+GPU Version: ```conda install pytorch cudatoolkit -c pytorch``` <Br/>
+CPU Version: ```conda install pytorch cpuonly -c pytorch```
+
 ## Model was trained for 20 Epochs and achieved a BLEU score of 25.37 (with model size of roughly 510 mb). <Br/>
 
 Different version of pytorch, torchtext and spacy might cause the program to break.
