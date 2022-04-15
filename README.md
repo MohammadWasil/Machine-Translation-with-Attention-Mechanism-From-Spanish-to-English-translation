@@ -1,6 +1,7 @@
 # Machine Translation with Attention Mechanism (From Spanish to English translation)
 
-You can find the Technical Report associated with the project on [ResearchGate](https://www.researchgate.net/publication/355917108_Neural_Machine_Translation_with_Attention)
+The research project was associated with "[INF-DSAM1B] Advanced Machine Learning B: Deep Learning for NLP", Summer Semester 2021, for my Masters of Science: Data Science, University of Potsdam, Germany.
+You can find the Technical Report on [ResearchGate](https://www.researchgate.net/publication/355917108_Neural_Machine_Translation_with_Attention)
 
 ## Version:
 ```
