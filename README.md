@@ -1,5 +1,7 @@
 # Machine Translation with Attention Mechanism (From Spanish to English translation)
 
+You can find the Technical Report associated with the project on [ResearchGate](https://www.researchgate.net/publication/355917108_Neural_Machine_Translation_with_Attention)
+
 ## Version:
 ```
 Pytroch version : 1.7.1+cu101
