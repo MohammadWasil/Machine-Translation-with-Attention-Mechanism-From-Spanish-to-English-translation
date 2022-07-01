@@ -4,6 +4,8 @@ The research project was associated with "[INF-DSAM1B] Advanced Machine Learning
 
 You can find the Technical Report on [ResearchGate](https://www.researchgate.net/publication/355917108_Neural_Machine_Translation_with_Attention).
 
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FMohammadWasil%2FMachine-Translation-with-Attention-Mechanism-From-Spanish-to-English-translation&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
+
 ## Version:
 ```
 Pytroch version : 1.7.1+cu101
