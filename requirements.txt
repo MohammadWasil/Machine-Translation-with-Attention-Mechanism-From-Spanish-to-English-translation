@@ -1,0 +1,7 @@
+torch==1.7.1+cu101
+torchtext==0.8.0
+spacy==3.1.1
+pandas
+tqdm
+nltk
+pyyaml

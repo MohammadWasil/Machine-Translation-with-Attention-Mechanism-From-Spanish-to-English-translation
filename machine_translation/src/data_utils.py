@@ -4,67 +4,16 @@ import nltk
 from sklearn.model_selection import train_test_split
 from tqdm import tqdm
 nltk.download('punkt')
+from utils_io import read_data
 
+import spacy
 
-try:
-    os.system('pip install -U spacy==3.1.1')
-    import spacy
-    print('!Spacy 3.1.1 imported successfully')
-except ImportError:
-    print('\n  Spacy is not installed. Trying to install package...')
-    try:
-        os.system('pip install -U spacy==3.1.1')
-        print(f'Spacy 3.1.1 version installed')
-    except ImportError:
-        print('Not able to install Spacy!')
+import pandas as pd
 
-try:
-    import pandas as pd
-    print('Pandas imported successfully')
-except ImportError:
-    print('\n Pandas is not installed. Trying to install package...')
-    try:
-        os.system('pip install pandas')
-    except:
-        print('Not able to install pandas!')
-
-try:
-    os.system('python -m spacy download es')
-    spacy_es = spacy.load('es_core_news_sm')
-    print('spacy spanish loaded')
-except ImportError:
-    print('\n Try other way to install spacy es...')
-    try:
-        spacy_es = spacy.load('es')
-        print('spacy spanish loaded')
-    except ImportError:
-        print('Not able to install spacy spanish!')
-
-try:
-    os.system('python -m spacy download en')
-    spacy_en = spacy.load('en_core_web_sm')
-    print('spacy english loaded')
-except ImportError:
-    print('\n Try other way to install spacy en...')
-    try:
-        spacy_en = spacy.load('en')
-        print('spacy english loaded')
-    except ImportError:
-        print('Not able to install spacy english!')
-
-def read_data():
-    print("Reading the file ...")
-    DATA_PATH = "Data"
-    
-    # 'utf-8' removes b'' character string literal
-    # splitlines() remove newline character
-    with open(os.path.join(DATA_PATH, "europarl-v7.es-en.es"), "rb") as f:
-        content_spanish = f.read().decode("utf-8").splitlines()
-    
-    with open(os.path.join(DATA_PATH, "europarl-v7.es-en.en"), "rb") as f:
-        content_english = f.read().decode("utf-8").splitlines()
-        
-    return content_english, content_spanish
+spacy_es = spacy.load('es_core_news_sm')
+#spacy_es = spacy.load('es')
+spacy_en = spacy.load('en_core_web_sm')
+#spacy_en = spacy.load('en')
 
 def sentence_preprocess(content_english, content_spanish):
     print("preprocessing the sentences ...")
@@ -138,4 +87,9 @@ def tokenize_es(text):
 def tokenize_en(text):
     return [tok.text for tok in spacy_en.tokenizer(text)]
 
-
+def prepare_data():
+    # if the process file already exists, then there is no need to process and split the data again.
+    if((os.path.isfile('train.csv') == False) or (os.path.isfile('val.csv') == False) or (os.path.isfile('test.csv') == False)):
+        
+        content_english, content_spanish = read_data()
+        sentence_preprocess(content_english, content_spanish)
