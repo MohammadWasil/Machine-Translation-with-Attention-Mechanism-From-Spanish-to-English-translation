@@ -20,8 +20,11 @@ def prepare_data():
 
 def get_fields_and_datasets():
     """Create torchtext Fields and TabularDatasets."""
-    source_field = Field(tokenize=tokenize_es, init_token="<sos>", eos_token="<eos>", lower=True)
-    target_field = Field(tokenize=tokenize_en, init_token="<sos>", eos_token="<eos>", lower=True)
+    sos_token = "<sos>"  # noqa: S105
+    eos_token = "<eos>"  # noqa: S105
+
+    source_field = Field(tokenize=tokenize_es, init_token=sos_token, eos_token=eos_token, lower=True)
+    target_field = Field(tokenize=tokenize_en, init_token=sos_token, eos_token=eos_token, lower=True)
     data_fields = [("src", source_field), ("trg", target_field)]
     train_data, valid_data, test_data = TabularDataset.splits(
         path="", train="train.csv", validation="val.csv", test="test.csv", format="csv", fields=data_fields

@@ -3,7 +3,7 @@ from __future__ import annotations
 import random
 
 import torch
-import torch.nn.functional as F # noqa: N812
+import torch.nn.functional as F  # noqa: N812
 from torch import nn
 
 
@@ -26,19 +26,19 @@ class Encoder(nn.Module):
 
     def forward(self, inputs):
         # WRITE CODE HERE
-        # input : [sequence_len, batch_size]
+        # input's shape : [sequence_len, batch_size]
         embeds = self.dropout(self.embedding(inputs))
         # https://stackoverflow.com/questions/49466894/how-to-correctly-give-inputs-to-embedding-lstm-and-linear-layers-in-pytorch
-        # output of the embedding is [seq_len, batch_size, embedding_size] # noqa: ERA001
+        # output of the embedding is [seq_len, batch_size, embedding_size]
 
         # input: [seq_len, batch_size, embedding_size] # noqa: ERA001
         rnn_enc, hidden = self.rnn(embeds)
-        # rnn out shape : [sequence_len, batch_size, encoder_hidden_dim*2] # noqa: ERA001
-        # hidden shape   : [2, batch_size, encoder_hidden_dim] # noqa: ERA001
+        # rnn out shape : [sequence_len, batch_size, encoder_hidden_dim*2]
+        # hidden shape   : [2, batch_size, encoder_hidden_dim]
 
         # concatenate both forward and backward hidden vectors
         hidden_f_b = torch.cat((hidden[0, :, :], hidden[1, :, :]), dim=1)
-        # output shape: [batch_size, encoder_hidden_dim*2] # noqa: ERA001
+        # output shape: [batch_size, encoder_hidden_dim*2]
 
         # input: [batch_size, encoder_hidden_dim*2] # noqa: ERA001
         hidden_enc = self.linear(hidden_f_b)
@@ -59,26 +59,26 @@ class Attention(nn.Module):
     def forward(self, decoder_hidden, encoder_output):
         # WRITE CODE HERE
 
-        # encoder_output shape : [sequence_len, batch_size, encoder_hidden_dim*2] # noqa: ERA001
-        # decoder_hidden shape : [batch_size, decoder_hidden_dim] # noqa: ERA001
+        # encoder_output shape : [sequence_len, batch_size, encoder_hidden_dim*2]
+        # decoder_hidden shape : [batch_size, decoder_hidden_dim]
 
         # repeat decoder hidden state sequence_len Time's.
-        # input shape : [batch_size, decoder_hidden_dim] # noqa: ERA001
+        # input shape : [batch_size, decoder_hidden_dim]
         decoder_hidden = torch.unsqueeze(decoder_hidden, 1)
-        # output shape: [batch_size, 1, decoder_hidden_dim] # noqa: ERA001
+        # output shape: [batch_size, 1, decoder_hidden_dim]
 
         decoder_hidden = decoder_hidden.repeat(1, encoder_output.shape[0], 1)
         # [batch_size, sequence_len, decoder_hidden_dim] # noqa: ERA001
 
         encoder_output = encoder_output.permute(1, 0, 2)
-        # encoder_output- shape : [batch_size, sequence_len, encoder_hidden_dim*2] # noqa: ERA001
+        # encoder_output- shape : [batch_size, sequence_len, encoder_hidden_dim*2]
 
         # concatenate encoder's output and decoder's hidden state
         # and feed into a neural network layer
         concat = torch.cat((encoder_output, decoder_hidden), dim=2)
         # shape- [batch_size, sequence_len, (encoder_hidden_dim*2) + decoder_hidden_dim], [batch_size, sequence_len, 3000] # noqa: ERA001
 
-        # input shape: [batch_size, sequence_len, (encoder_hidden_dim*2) + decoder_hidden_dim] # noqa: ERA001
+        # input shape: [batch_size, sequence_len, (encoder_hidden_dim*2) + decoder_hidden_dim]
         fc1 = self.fc1(concat)
         # output: [batch_size, sequence_len, decoder_hidden_dim] # noqa: ERA001
 
@@ -99,7 +99,7 @@ class Attention(nn.Module):
 
         return alpha @ encoder_output  # multiplying all the words in each sequence, from 1..N, wher N=sequence len.
         # [batch_size, 1, sequence_len] * [batch_size, sequence_len, encoder_hidden_dim*2] # noqa: ERA001
-        # attention- shape : [batch_size, 1, encoder_hidden_dim*2] # noqa: ERA001
+        # attention- shape : [batch_size, 1, encoder_hidden_dim*2]
 
 
 class Decoder(nn.Module):
@@ -167,7 +167,7 @@ class Decoder(nn.Module):
         # c1 shape: [1, BATCH_SIZE, embedding_dim+(encoder_hidden_dim*2)+decoder_hidden_dim]
 
         pred = self.linear(c1).squeeze(0)
-        # pred's shape: [BATCH_SIZE, embedding_size_spanish] # noqa: ERA001
+        # pred's shape: [BATCH_SIZE, embedding_size_spanish]
 
         return pred, decoder_hidden.squeeze(0)
 
@@ -208,7 +208,7 @@ class Model(nn.Module):
             outputs.append(output)
 
             # decide if we are going to use teacher forcing or not
-            teacher_force = random.random() < teacher_forcing_ratio
+            teacher_force = random.random() < teacher_forcing_ratio  # noqa: S311
 
             # get the highest predicted token from our predictions
             top1 = output.argmax(1)

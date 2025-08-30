@@ -1,13 +1,13 @@
 from __future__ import annotations
 
 from pathlib import Path
+
 import nltk
-import spacy
-import pandas as pd
 import numpy as np
-from tqdm import tqdm
+import pandas as pd
+import spacy
 from sklearn.model_selection import train_test_split
-from pathlib import Path
+from tqdm import tqdm
 from utils_io import read_data
 
 nltk.download("punkt")
@@ -26,22 +26,21 @@ def sentence_preprocess(content_english, content_spanish):
     english_tokenized_text = []
     spanish_tokenized_text = []
 
+    maximum_sentence_length = 50
+
     for i in tqdm(range(len(content_english))):
         tok_eng = nltk.word_tokenize(content_english[i], language="english")
         tok_esp = nltk.word_tokenize(content_spanish[i], language="spanish")
 
-        # both of the sentence in english and spanish should be smaller than 48
-        if (len(tok_eng) <= 50) and (len(tok_esp) <= 50):
+        # both of the sentence in english and spanish should be smaller than 48 (50-2 for <sos> and <eos>)
+        if (len(tok_eng) <= maximum_sentence_length) and (len(tok_esp) <= maximum_sentence_length):
             english_tokenized_text.append(tok_eng)
             spanish_tokenized_text.append(tok_esp)
-            # tqdm._instances.clear()
 
     # sort the data, so we have maximum words in a sentence in the top most sentences, and not padded sentence most of the time.
     # sentence with small number of words would be at the bottom, which we will discard, eventually, since we will select top
     # 1,000,000 sentences for training.
-    lenlist = []
-    for x in english_tokenized_text:
-        lenlist.append(len(x))
+    lenlist = [len(x) for x in english_tokenized_text]
 
     sortedindex = np.argsort(lenlist)[::-1]
     lst_eng = ["english"] * len(english_tokenized_text)
@@ -57,8 +56,8 @@ def sentence_preprocess(content_english, content_spanish):
     # considering only first 1_000_000 sentences.
     english_tokenized_text = lst_eng[0:1_000_000]
     spanish_tokenized_text = lst_spn[0:1_000_000]
-    print("Processing completed")
-    print("Splitting the data ...")
+    print("Processing completed")  # noqa: T201
+    print("Splitting the data ...")  # noqa: T201
     en_train, en_valid, es_train, es_valid = train_test_split(
         english_tokenized_text, spanish_tokenized_text, test_size=0.1, random_state=False, shuffle=False
     )
@@ -66,9 +65,6 @@ def sentence_preprocess(content_english, content_spanish):
     en_valid, en_test, es_valid, es_test = train_test_split(
         en_valid, es_valid, test_size=0.2, random_state=False, shuffle=False
     )
-
-    # len(en_valid), len(es_valid), len(en_test), len(es_test), len(en_train), len(es_train)
-    # (80000, 80000, 20000, 20000, 900000, 900000)
 
     raw_data = {"src": [" ".join(line) for line in es_train], "trg": [" ".join(line) for line in en_train]}
     train_data = pd.DataFrame(raw_data, columns=["src", "trg"])

@@ -8,7 +8,7 @@ import yaml
 from machine_translation.src.dataset import get_fields_and_datasets
 from machine_translation.src.dataset import get_iterators
 from machine_translation.src.dataset import prepare_data
-from machine_translation.src.download_data import Download_and_extract
+from machine_translation.src.download_data import download_and_extract
 from machine_translation.src.inference import calculate_bleu
 from machine_translation.src.model import Model
 from machine_translation.src.train import Trainer
@@ -48,7 +48,7 @@ def main():
 
     data_dir = Path("Data")
     if not (data_dir / "europarl-v7.es-en.en").is_file() or not (data_dir / "europarl-v7.es-en.es").is_file():
-        Download_and_extract()
+        download_and_extract()
 
     prepare_data()
     source_field, target_field, train_data, valid_data, test_data = get_fields_and_datasets()
