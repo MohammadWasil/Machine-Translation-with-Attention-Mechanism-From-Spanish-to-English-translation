@@ -13,7 +13,7 @@ torchtext version: 0.8.0
 spacy version: 3.1.1
 ```
 
-## To install Pytorch:
+## To install Pytorch (Conda version):
 ### Steps
 1. Create an environment <Br/>
 ```conda create -n pytorch python=3.7```
@@ -34,23 +34,40 @@ spacy version: 3.1.1
 GPU Version: ```conda install pytorch cudatoolkit -c pytorch``` <Br/>
 CPU Version: ```conda install pytorch cpuonly -c pytorch```
 
-## Model was trained for 20 Epochs and achieved a BLEU score of 25.37 (with model size of roughly 510 mb). <Br/>
+## Installation Steps:
 
-Different version of pytorch, torchtext and spacy might cause the program to break.
+1. Install Python 3.6–3.8
+Ensure Python 3.6–3.8 is installed on your system. For WSL/Ubuntu, you can use the `deadsnakes` PPA:
 
-The structure of the files should looks like this:
+```bash
+sudo apt update
+sudo apt install software-properties-common
+sudo add-apt-repository ppa:deadsnakes/ppa
+
+sudo apt install python3.7.17
+sudo apt install python3.7-venv python3.7-distutils -y
 ```
-.
-├── Data                    
-│   ├──                     # initialy this would be empty.
-│   └──                     # initialy this would be empty.
-├── config.yml
-├── data_utils.py
-├── download_data.py
-├── mymodel.py
-├── README.txt
-└── run.py
+
+2. Create a virtual env in python and activate it:
+
 ```
+python -m venv .venv
+source .venv/bin/activate
+```
+
+2. Install Poetry
+
+```
+pip install poetry
+```
+
+3. Install runtime and development dependencies:
+```
+poetry install --no-root
+```
+
+"Model was trained for 20 Epochs and achieved a BLEU score of 25.37 (with model size of roughly 510 mb). <Br/>"
+
 Make sure to have an empty folder, "Data"
 
 The files can be run from cmd prompt, using the the following cmd lines:
