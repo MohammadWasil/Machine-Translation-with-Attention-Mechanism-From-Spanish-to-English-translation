@@ -1,11 +1,12 @@
+from __future__ import annotations
+
 import torch
-import torch.nn as nn
+from torch import nn
 from torch.optim import Adam
 
 
 class Trainer:
     def __init__(self, model, config, device, embedding_size_english):
-
         self.model = model
         self.config = config
         self.device = device
@@ -13,15 +14,12 @@ class Trainer:
         self.loss_function = nn.CrossEntropyLoss()
 
     def evaluate(self, iterator):
-
         self.model.eval()
 
         epoch_loss = 0
 
         with torch.no_grad():
-
-            for i, batch in enumerate(iterator):
-
+            for _, batch in enumerate(iterator):
                 source = batch.src
                 target = batch.trg
 
@@ -29,10 +27,10 @@ class Trainer:
                 output = self.model(source, target, 0)
 
                 prediction = output[1:].reshape(-1, self.EMBEDDING_SIZE_ENGLISH)
-                # shape: [sequence_len_target-1*BATCH_SIZE, EMBEDDING_SIZE_ENGLISH]
+                # prdiction's shape: [sequence_len_target-1*BATCH_SIZE, EMBEDDING_SIZE_ENGLISH]
 
                 actual = target[1:].reshape(-1)
-                # shape: [sequence_len_target-1*BATCH_SIZE]
+                # actual's shape: [sequence_len_target-1*BATCH_SIZE]
 
                 loss = self.loss_function(prediction, actual)
 
@@ -40,16 +38,13 @@ class Trainer:
         return epoch_loss / len(iterator)
 
     def train(self, train_iterator, valid_iterator):
-
-        optimizer = Adam(self.model.parameters(), self.config['lr'])
+        optimizer = Adam(self.model.parameters(), self.config["lr"])
 
         for epoch in range(self.config["epochs"]):
-
             self.model.train()
             self.model.to(self.device)
             train_loss = 0
-            for i, batch in enumerate(train_iterator):
-
+            for _, batch in enumerate(train_iterator):
                 source = batch.src
                 target = batch.trg
                 # src shape: [sequence_len_source, BATCH_SIZE]
@@ -59,7 +54,7 @@ class Trainer:
 
                 # feed the source and target sentence into the model to get prediction
                 output = self.model(source, target)
-                #output shape : [sequence_len_target, BATCH_SIZE, EMBEDDING_SIZE_ENGLISH]
+                # output shape : [sequence_len_target, BATCH_SIZE, EMBEDDING_SIZE_ENGLISH]
 
                 prediction = output[1:].reshape(-1, self.EMBEDDING_SIZE_ENGLISH)
                 # prediction shape: [sequence_len_target-1*BATCH_SIZE, EMBEDDING_SIZE_ENGLISH]
@@ -81,11 +76,7 @@ class Trainer:
             valid_loss = self.evaluate(valid_iterator)
 
             # save the model at every epoch.
-            state = {
-                    'epoch': epoch+1,
-                    'state_dict': self.model.state_dict(),
-                    'optimizer': optimizer.state_dict()
-            }
-            torch.save(state, f'model_{epoch+1}.pickle')
+            state = {"epoch": epoch + 1, "state_dict": self.model.state_dict(), "optimizer": optimizer.state_dict()}
+            torch.save(state, f"model_{epoch + 1}.pickle")
 
-            print(f'Epoch: {epoch+1} | Train Loss: {train_loss} | Val. Loss: {valid_loss}')
+            print(f"Epoch: {epoch + 1} | Train Loss: {train_loss} | Val. Loss: {valid_loss}")  # noqa: T201
