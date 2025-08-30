@@ -2,14 +2,20 @@ import os
 import argparse
 import yaml
 
+import spacy
 import torch
 import torch.nn as nn
 from torch.optim import Adam
 from torchtext.data.metrics import bleu_score
+from torchtext.data import Field, TabularDataset, Iterator
 
-from mymodel import Model
-from data_utils import read_data, sentence_preprocess, tokenize_en, tokenize_es
-from download_data import Download_and_extract
+from machine_translation.src.model import Model
+from machine_translation.src.data_utils import read_data, sentence_preprocess, tokenize_en, tokenize_es
+from machine_translation.src.download_data import Download_and_extract
+from machine_translation.src.dataset import prepare_data, get_fields_and_datasets, get_iterators
+from machine_translation.src.model import Model
+from machine_translation.src.train import Trainer
+from machine_translation.src.inference import translate_sentence
 
 '''
 Pytroch version :  1.7.1+cu101
@@ -17,8 +23,6 @@ torchtext version: 0.8.0
 spacy version:     3.1.1
 '''
 
-from torchtext.data import Field, TabularDataset, Iterator
-import spacy
 
 
 def parse_args():
@@ -49,10 +53,6 @@ def parse_args():
     return args
 
 
-from machine_translation.src.dataset import prepare_data, get_fields_and_datasets, get_iterators
-from machine_translation.src.model import Model
-from machine_translation.src.train import Trainer
-from machine_translation.src.inference import translate_sentence,   
 
 def main():
     args = parse_args()
