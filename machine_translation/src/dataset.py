@@ -27,36 +27,3 @@ def get_iterators(train_data, valid_data, test_data, batch_size, device):
         valid_iterator = Iterator(valid_data, batch_size=batch_size, device=device, shuffle=False)
         test_iterator = Iterator(test_data, batch_size=batch_size, device=device, shuffle=False)
         return train_iterator, valid_iterator, test_iterator
-
-
-def get_tokenized_data():
-    # Tokenizing
-    print("Tokenizing ...")
-    source_field = Field(tokenize = tokenize_es, 
-            init_token = '<sos>', 
-            eos_token = '<eos>', 
-            lower = True)
-
-    target_field = Field(tokenize = tokenize_en, 
-            init_token = '<sos>', 
-            eos_token = '<eos>', 
-            lower = True)
-    
-    data_fields = [('src', source_field), ('trg', target_field)]
-        
-    train_data, valid_data, test_data = TabularDataset.splits(path='',
-                                            train='train.csv', validation='val.csv', test='test.csv',
-                                            format = 'csv',
-                                            fields = data_fields)
-    
-    source_field.build_vocab(train_data, min_freq = 2)
-    target_field.build_vocab(train_data, min_freq = 2)
-
-    return source_field, target_field, train_data, valid_data, test_data
-
-def get_iterators(train_data, valid_data, test_data, config, device):
-    print("Creating Data Iterator ...")
-    train_iterator = Iterator(train_data, batch_size=config["batch_size"], device=device, shuffle=False)
-    valid_iterator = Iterator(valid_data, batch_size=config["batch_size"], device=device, shuffle=False)
-    test_iterator  = Iterator(test_data, batch_size=config["batch_size"], device=device, shuffle=False)
-    return train_iterator, valid_iterator, test_iterator

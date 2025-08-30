@@ -1,16 +1,18 @@
+import torch
+import torch.nn as nn
+from torch.optim import Adam
+
 
 class Trainer:
     def __init__(self, model, config, device, embedding_size_english):
-        import torch
-        import torch.nn as nn
-        from torch.optim import Adam
 
         self.model = model
         self.config = config
         self.device = device
         self.EMBEDDING_SIZE_ENGLISH = embedding_size_english
+        self.loss_function = nn.CrossEntropyLoss()
 
-    def evaluate(self, iterator, loss_function):
+    def evaluate(self, iterator):
 
         self.model.eval()
         
@@ -32,7 +34,7 @@ class Trainer:
                 actual = target[1:].reshape(-1)
                 # shape: [sequence_len_target-1*BATCH_SIZE]
 
-                loss = loss_function(prediction, actual)
+                loss = self.loss_function(prediction, actual)
 
                 epoch_loss += loss.item()
         return epoch_loss / len(iterator)
@@ -40,7 +42,6 @@ class Trainer:
     def train(self, train_iterator, valid_iterator):
         
         optimizer = Adam(self.model.parameters(), self.config['lr'])
-        loss_function = nn.CrossEntropyLoss()
         
         for epoch in range(self.config["epochs"]):
             
@@ -66,7 +67,7 @@ class Trainer:
                 actual = target[1:].reshape(-1)
                 # actual shape: [sequence_len_target-1*BATCH_SIZE]
                 
-                loss = loss_function(prediction, actual)
+                loss = self.loss_function(prediction, actual)
                 
                 loss.backward()
                 
@@ -77,7 +78,7 @@ class Trainer:
                 train_loss += loss.item()
             train_loss = train_loss / len(train_iterator)
             
-            valid_loss = self.evaluate(self.model, valid_iterator, loss_function)
+            valid_loss = self.evaluate(valid_iterator)
 
             # save the model at every epoch.
             state = {
@@ -87,4 +88,4 @@ class Trainer:
             }
             torch.save(state, f'model_{epoch+1}.pickle')
 
-            print(f'Epoch: {epoch+1} | Train Loss: {train_loss} | Val. Loss: {valid_loss}')   
+            print(f'Epoch: {epoch+1} | Train Loss: {train_loss} | Val. Loss: {valid_loss}')

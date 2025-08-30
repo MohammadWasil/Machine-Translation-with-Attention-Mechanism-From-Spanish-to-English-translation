@@ -84,8 +84,7 @@ def main():
         model_number = args.MODEL
         state = torch.load(f'model_{model_number}.pickle')
         model.load_state_dict(state['state_dict'])
-        loss_function = nn.CrossEntropyLoss()
-        test_loss = trainer.evaluate(test_iterator, loss_function)
+        test_loss = trainer.evaluate(test_iterator)
         print(f'Test Loss: {test_loss}')
     elif args.RUN_MODE == 'bleu':
         model_number = args.MODEL
